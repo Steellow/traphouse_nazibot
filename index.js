@@ -32,7 +32,7 @@ schedule.scheduleJob(
     async () => {
         const weekday = new Date().getDay();
         const shifts = weekday === 3 ? WEDNESDAY_SHIFTS : SATURDAY_SHIFTS;
-        const rotation = getCurrentRotationAndRotate();
+        const rotation = await getCurrentRotationAndRotate();
 
         let msg = "<b><u>SIIVOUSVUOROT</u></b>\n";
         for (let i = 0; i < shifts.length; i++) {
