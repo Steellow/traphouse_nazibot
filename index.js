@@ -4,7 +4,7 @@ const storage = require("node-persist");
 require("dotenv").config();
 
 const SATURDAY_SHIFTS = ["Vessa + kylppäri", "Keittiö", "Olohuone + imurointi"];
-const WEDNESDAY_SHIFTS = ["Keittiö", "Imurointi (käytävä + keittiö)"];
+const WEDNESDAY_SHIFTS = ["Keittiö", "Imurointi (eteinen + keittiö)"];
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 bot.launch();
