@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "update": "git pull && npm i && pm2 restart traphouse_nazibot"
+    "deploy": "npm i && pm2 start \"npm run start\" --name \"traphouse_nazibot\" --time",
+    "update": "git pull && npm i && pm2 restart traphouse_nazibot --time"
   },
   "author": "Hannes Kinnunen",
   "dependencies": {
