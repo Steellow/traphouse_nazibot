@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "update": "git pull && npm i && pm2 restart traphouse_nazibot"
   },
   "author": "Hannes Kinnunen",
   "dependencies": {
