@@ -69,7 +69,7 @@ schedule.scheduleJob(
 );
 
 // Runs job immediately
-bot.hears("/now", job);
+bot.hears("/now", async (ctx) => job());
 
 // Runs the job but replies to you instead of sending it to group
 bot.hears("/test", async (ctx) => job(ctx));
