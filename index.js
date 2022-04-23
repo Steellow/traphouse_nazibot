@@ -25,7 +25,7 @@ const getCurrentRotationAndRotate = async () => {
 
 schedule.scheduleJob(
     {
-        hour: 12,
+        hour: 10,
         minute: 0,
         dayOfWeek: [3, 6],
     },
