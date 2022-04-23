@@ -38,10 +38,12 @@ const job = async () => {
         msg += `\n${rotation[i]}: ${shifts[i]}`;
     }
 
-    await bot.telegram.sendMessage(process.env.GROUP_ID, msg).catch((err) => {
-        console.log("Sending msg to group failed");
-        console.log(err);
-    });
+    await bot.telegram
+        .sendMessage(process.env.GROUP_ID, msg, { reply_markup: "HTML" })
+        .catch((err) => {
+            console.log("Sending msg to group failed");
+            console.log(err);
+        });
 };
 
 schedule.scheduleJob(
