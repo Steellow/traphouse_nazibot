@@ -12,7 +12,7 @@ bot.launch();
 const getCurrentRotationAndRotate = async () => {
     await storage.init();
 
-    const currRotation = (await storage.getItem("rotation")) || [
+    let currRotation = (await storage.getItem("rotation")) || [
         "PÄLE",
         "HANKI",
         "IIKKA",
