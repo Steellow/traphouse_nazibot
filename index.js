@@ -19,8 +19,29 @@ const getCurrentRotationAndRotate = async () => {
     ];
     const newRotation = currRotation.unshift(currRotation.pop());
 
+    console.log(`Got current rotation: ${currRotation}`);
+    console.log(`Saving new rotation: ${newRotation}`);
+
     await storage.setItem("rotation", newRotation);
     return currRotation;
+};
+
+const job = async () => {
+    const weekday = new Date().getDay();
+    const shifts = weekday === 3 ? WEDNESDAY_SHIFTS : SATURDAY_SHIFTS;
+    console.log(`Using ${weekday === 3 ? "wednesday" : "saturday"} shifts`);
+
+    const rotation = await getCurrentRotationAndRotate();
+
+    let msg = "<b><u>SIIVOUSVUOROT</u></b>\n";
+    for (let i = 0; i < shifts.length; i++) {
+        msg += `\n${rotation[i]}: ${shifts[i]}`;
+    }
+
+    await bot.telegram.sendMessage(process.env.GROUP_ID, msg).catch((err) => {
+        console.log("Sending msg to group failed");
+        console.log(err);
+    });
 };
 
 schedule.scheduleJob(
@@ -30,18 +51,12 @@ schedule.scheduleJob(
         dayOfWeek: [3, 6],
     },
     async () => {
-        const weekday = new Date().getDay();
-        const shifts = weekday === 3 ? WEDNESDAY_SHIFTS : SATURDAY_SHIFTS;
-        const rotation = await getCurrentRotationAndRotate();
-
-        let msg = "<b><u>SIIVOUSVUOROT</u></b>\n";
-        for (let i = 0; i < shifts.length; i++) {
-            msg += `\n${rotation[i]}: ${shifts[i]}`;
-        }
-
-        await ctx.telegram.sendMessage(process.env.GROUP_ID, msg);
+        console.log("Running scheduled job");
+        await job();
     }
 );
+
+bot.hears("/now", job);
 
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
