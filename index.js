@@ -17,7 +17,10 @@ const getCurrentRotationAndRotate = async () => {
         "HANKI",
         "IIKKA",
     ];
-    const newRotation = currRotation.unshift(currRotation.pop());
+
+    // Moves array last item to first
+    let newRotation = [...currRotation];
+    newRotation.unshift(newRotation.pop());
 
     console.log(`Got current rotation: ${currRotation}`);
     console.log(`Saving new rotation: ${newRotation}`);
@@ -26,7 +29,7 @@ const getCurrentRotationAndRotate = async () => {
     return currRotation;
 };
 
-const job = async () => {
+const job = async (ctx) => {
     const weekday = new Date().getDay();
     const shifts = weekday === 3 ? WEDNESDAY_SHIFTS : SATURDAY_SHIFTS;
     console.log(`Using ${weekday === 3 ? "wednesday" : "saturday"} shifts`);
@@ -38,8 +41,15 @@ const job = async () => {
         msg += `\n${rotation[i]}: ${shifts[i]}`;
     }
 
+    if (ctx) {
+        await ctx
+            .reply(msg, { parse_mode: "HTML" })
+            .catch((err) => console.log(err));
+        return;
+    }
+
     await bot.telegram
-        .sendMessage(process.env.GROUP_ID, msg, { reply_markup: "HTML" })
+        .sendMessage(process.env.GROUP_ID, msg, { parse_mode: "HTML" })
         .catch((err) => {
             console.log("Sending msg to group failed");
             console.log(err);
@@ -58,7 +68,11 @@ schedule.scheduleJob(
     }
 );
 
+// Runs job immediately
 bot.hears("/now", job);
+
+// Runs the job but replies to you instead of sending it to group
+bot.hears("/test", async (ctx) => job(ctx));
 
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
