@@ -76,3 +76,11 @@ bot.hears("/test", async (ctx) => job(ctx));
 
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
+
+// Error handling, just in case
+bot.catch(async (err, ctx) => console.error(`[ERROR] ${err}`));
+
+process.on("uncaughtException", async (err) => {
+    console.error("[[[UNCAUGHT ERROR]]]", err);
+    process.exit(1); //mandatory (as per the Node.js docs)
+});
